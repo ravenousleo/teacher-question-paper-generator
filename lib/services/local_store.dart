@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:sembast_web/sembast_web.dart';
+
 import '../models/app_models.dart';
 
 /// Sembast uses IndexedDB in Chrome and a local database file on Android.
@@ -10,11 +11,13 @@ class LocalStore {
   Future<Database>? _opening;
   Future<Database> _database() => _opening ??= _open();
   Future<Database> _open() async {
-    if (kIsWeb)
+    if (kIsWeb) {
       return databaseFactoryWeb.openDatabase('teacher_question_paper.db');
+    }
     final dir = await getApplicationDocumentsDirectory();
-    return databaseFactoryIo
-        .openDatabase('${dir.path}/teacher_question_paper.db');
+    return databaseFactoryIo.openDatabase(
+      '${dir.path}/teacher_question_paper.db',
+    );
   }
 
   final _banks = stringMapStoreFactory.store('question_banks');
